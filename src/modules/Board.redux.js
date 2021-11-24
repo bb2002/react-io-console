@@ -38,7 +38,11 @@ const initialState = {
     },
     read: {
         code: 0,
-        data: []        // 글 데이터
+        data: {
+            news: [],
+            notice: [],
+            recruit: []
+        }        // 글 데이터
     },
     update: {
         code: 0,
@@ -53,7 +57,9 @@ const initialState = {
 const boardReducer = handleActions({
     [BOARD_READ_SUCCESS]: (state, { payload: data }) => produce(state, draft => {
         draft.read.code = 200
-        draft.read.data = data
+        console.log({ ...state.read.data, ...data })
+
+        draft.read.data = { ...state.read.data, ...data }
     }),
     [BOARD_CREATE_SUCCESS]: (state, { payload: data }) => produce(state, draft => {
         draft.create.code = 200

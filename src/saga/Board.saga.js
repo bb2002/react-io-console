@@ -1,5 +1,5 @@
 import {BOARD_READ, boardLoading, boardReadFailure, boardReadSuccess} from "../modules/Board.redux";
-import { put, call, takeLatest } from 'redux-saga/effects';
+import { put, call, takeEvery } from 'redux-saga/effects';
 import { collection, getDocs } from "firebase/firestore";
 import { fbStore } from "../libs/Firebase"
 import moment from "moment";
@@ -25,7 +25,6 @@ function boardReadGen() {
 
             snapshot.forEach(doc => {
                 const data = doc.data()
-                console.log("DATA", data)
 
                 output.push({
                     no: doc.id,
@@ -40,9 +39,13 @@ function boardReadGen() {
         }
 
         const posts = yield call(patch)
-        yield put(boardReadSuccess(posts))
+        const result = {
+            [action.payload]: posts
+        }
+        console.log("SAGA RESULT", result)
+
+        yield put(boardReadSuccess(result))
     }, function* (ex) {
-        console.log(ex)
         if(ex.response === undefined) {
             yield put(boardReadFailure(-1))
         } else {
@@ -52,5 +55,5 @@ function boardReadGen() {
 }
 
 export default function* boardSaga() {
-    yield takeLatest(BOARD_READ, boardReadGen())
+    yield takeEvery(BOARD_READ, boardReadGen())
 }

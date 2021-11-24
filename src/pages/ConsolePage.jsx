@@ -1,6 +1,8 @@
 import React from 'react';
 import {Route, Routes} from "react-router-dom";
 import ConsoleMain from "./console/ConsoleMain";
+import BoardList from "./console/BoardList";
+import BoardWrite from "./console/BoardWrite";
 
 const ConsolePage = () => {
     return (
@@ -8,6 +10,8 @@ const ConsolePage = () => {
             <br />
             <Routes>
                 <Route exact path="/" element={<ConsoleMain />} />
+                <Route exact path="/list/:category" element={<BoardList />} />
+                <Route exact path="/write/:category" element={<BoardWrite />} />
             </Routes>
         </div>
     );
