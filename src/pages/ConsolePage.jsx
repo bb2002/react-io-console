@@ -9,9 +9,9 @@ const ConsolePage = () => {
         <div className="container">
             <br />
             <Routes>
-                <Route exact path="/" element={<ConsoleMain />} />
-                <Route exact path="/list/:category" element={<BoardList />} />
-                <Route exact path="/write/:category" element={<BoardWrite />} />
+                <Route path="/" element={<ConsoleMain />} />
+                <Route path="/list/:category" element={<BoardList />} />
+                <Route path="/write/:category" element={<BoardWrite />} />
             </Routes>
         </div>
     );

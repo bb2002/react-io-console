@@ -1,10 +1,11 @@
-import React from "react";
+import React, {useEffect} from "react";
 import HeaderComp from "./components/Header.comp";
-import {Route, Routes} from "react-router-dom";
+import {Route, Routes, useLocation, useNavigate} from "react-router-dom";
 import styled from "styled-components"
 import LoginPage from "./pages/LoginPage";
 import {useWindowSize} from "./hooks/useWindowSize";
 import ConsolePage from "./pages/ConsolePage";
+import {useFirebaseLogin} from "./hooks/useFirebaseLogin";
 
 const AppContainer = styled.div`
   width: 100%;
@@ -13,11 +14,25 @@ const AppContainer = styled.div`
 
 function App() {
     const { height } = useWindowSize()
+    const { getConfigFromStorage, firebaseLogin } = useFirebaseLogin()
+    const navigate = useNavigate()
+    const location = useLocation()
 
     const RouteContainer = styled.div`
       width: 100%;
       height: ${height - 54}px;
     `
+    
+    useEffect(() => {
+        const config = getConfigFromStorage()
+        if(config) {
+            // 자동 로그인
+            firebaseLogin(getConfigFromStorage())
+            if(location.pathname === "/") {
+                navigate("/console")
+            }
+        }
+    }, [firebaseLogin, getConfigFromStorage, location.pathname, navigate])
 
     return (
         <AppContainer>
@@ -25,8 +40,8 @@ function App() {
 
             <RouteContainer>
                 <Routes>
-                    <Route exact path="/" element={<LoginPage />} />
-                    <Route path="/console" element={<ConsolePage />} />
+                    <Route path="/" element={<LoginPage />} />
+                    <Route path="/console/*" element={<ConsolePage />} />
                 </Routes>
             </RouteContainer>
         </AppContainer>

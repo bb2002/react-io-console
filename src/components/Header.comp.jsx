@@ -1,6 +1,7 @@
 import React from 'react';
 import styled from 'styled-components'
 import {Link} from "react-router-dom";
+import {useFirebaseLogin} from "../hooks/useFirebaseLogin";
 
 const Header = styled.header`
   height: 54px;
@@ -24,10 +25,12 @@ const HeaderTitle = styled.h3`
 `
 
 const HeaderComp = () => {
+    const { getConfigFromStorage } = useFirebaseLogin()
+
     return (
         <Header>
             <HeaderContainer className="container">
-                <Link to="/" style={{ textDecoration: "none" }}>
+                <Link to={getConfigFromStorage() ? "/console" : "/"} style={{ textDecoration: "none" }}>
                     <HeaderTitle>(주) 이오 관리 콘솔</HeaderTitle>
                 </Link>
             </HeaderContainer>

@@ -21,7 +21,7 @@ export function httpMessageExecute(code,
             message.success(h404)
             break;
         case 401:
-            message.success(h401)
+            message.warn(h401)
             break;
         case 0:
             break;
