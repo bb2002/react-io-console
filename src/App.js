@@ -3,7 +3,6 @@ import HeaderComp from "./components/Header.comp";
 import {Route, Routes, useLocation, useNavigate} from "react-router-dom";
 import styled from "styled-components"
 import LoginPage from "./pages/LoginPage";
-import {useWindowSize} from "./hooks/useWindowSize";
 import ConsolePage from "./pages/ConsolePage";
 import {useFirebaseLogin} from "./hooks/useFirebaseLogin";
 
@@ -13,14 +12,14 @@ const AppContainer = styled.div`
 `
 
 function App() {
-    const { height } = useWindowSize()
+    //const { height } = useWindowSize()
     const { getConfigFromStorage, firebaseLogin } = useFirebaseLogin()
     const navigate = useNavigate()
     const location = useLocation()
 
     const RouteContainer = styled.div`
       width: 100%;
-      height: ${height - 54}px;
+      height: 1000px;
     `
     
     useEffect(() => {

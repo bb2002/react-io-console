@@ -42,7 +42,7 @@ const BoardList = () => {
         {
             title: "작업",
             dataIndex: "actions",
-            key: "action",
+            key: "actions",
             width: 100,
             render: (no) => (
                 <ActionButtonContainer>
@@ -69,7 +69,7 @@ const BoardList = () => {
                         no: value.no
                     },                                 // 제목
                     date: value.createdAt.format("MM/DD HH:mm"),        // 날짜
-                    action: value.no
+                    actions: value.no,
                 })).filter(value => value.title.text.indexOf(searchText) !== -1)
             )
         }

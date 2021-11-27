@@ -1,12 +1,19 @@
-import {BOARD_READ, boardLoading, boardReadFailure, boardReadSuccess} from "../modules/Board.redux";
-import { put, call, takeEvery } from 'redux-saga/effects';
-import { collection, getDocs } from "firebase/firestore";
+import {
+    BOARD_CREATE,
+    BOARD_READ,
+    boardCreateFailure,
+    boardCreateSuccess,
+    boardLoading,
+    boardReadFailure,
+    boardReadSuccess
+} from "../modules/Board.redux";
+import { put, call, takeEvery, takeLatest } from 'redux-saga/effects';
+import { collection, getDocs, doc, setDoc } from "firebase/firestore";
 import { fbStore } from "../libs/Firebase"
 import moment from "moment";
 
 function generateBoardFunction(exec, fail) {
     return function* (action) {
-
         yield put(boardLoading(true))
         try {
             yield exec(action)
@@ -42,7 +49,6 @@ function boardReadGen() {
         const result = {
             [action.payload]: posts
         }
-        console.log("SAGA RESULT", result)
 
         yield put(boardReadSuccess(result))
     }, function* (ex) {
@@ -54,6 +60,33 @@ function boardReadGen() {
     })
 }
 
+function boardCreateGen() {
+    return generateBoardFunction(function* (action) {
+        async function patch() {
+            const docName = Math.random().toString(36).substr(2,11)
+            const ref = doc(fbStore, action.payload.category, docName)
+            await setDoc(ref, {
+                title: action.payload.title,
+                description: action.payload.content,
+                files: action.payload.files,
+                createdAt: new Date()
+            })
+            return docName
+        }
+
+        const newDoc = yield call(patch)
+        yield put(boardCreateSuccess({ category: action.payload.category, no: newDoc }))
+    }, function* (ex) {
+        console.log(ex)
+        if(ex.response === undefined) {
+            yield put(boardCreateFailure(-1))
+        } else {
+            yield put(boardCreateFailure(ex.response.status))
+        }
+    })
+}
+
 export default function* boardSaga() {
     yield takeEvery(BOARD_READ, boardReadGen())
+    yield takeLatest(BOARD_CREATE, boardCreateGen())
 }
