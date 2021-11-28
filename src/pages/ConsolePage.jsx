@@ -5,6 +5,7 @@ import BoardList from "./console/BoardList";
 import BoardWrite from "./console/BoardWrite";
 import BoardRead from "./console/BoardRead";
 import BoardUpdate from "./console/BoardUpdate";
+import BoardDelete from "./console/BoardDelete";
 
 const ConsolePage = () => {
     return (
@@ -16,6 +17,7 @@ const ConsolePage = () => {
                 <Route path="/write/:category" element={<BoardWrite />} />
                 <Route path="/read/:category/:no" element={<BoardRead />} />
                 <Route path="/edit/:category/:no" element={<BoardUpdate />} />
+                <Route path="/delete/:category/:no" element={<BoardDelete />} />
             </Routes>
         </div>
     );

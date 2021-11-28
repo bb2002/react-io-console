@@ -47,10 +47,19 @@ const BoardList = () => {
             render: (no) => (
                 <ActionButtonContainer>
                     <Tooltip title="수정">
-                        <Button type="primary" shape="circle" icon={<EditOutlined />} onClick={() => navigate(`/console/edit/${params.category}/${no}`)}/>
+                        <Button
+                            type="primary"
+                            shape="circle"
+                            icon={<EditOutlined />}
+                            onClick={() => navigate(`/console/edit/${params.category}/${no}`)}/>
                     </Tooltip>
                     <Tooltip title="삭제">
-                        <Button type="primary" danger={true} shape="circle" icon={<DeleteOutlined />} />
+                        <Button
+                            type="primary"
+                            danger={true}
+                            shape="circle"
+                            icon={<DeleteOutlined />}
+                            onClick={() => navigate(`/console/delete/${params.category}/${no}`)}/>
                     </Tooltip>
                 </ActionButtonContainer>
             )

@@ -37,6 +37,27 @@ const PostEditorComp = ({ postForm, setPostForm, onSubmit, loading }) => {
         setNowUploading(uploading)
     }
 
+    const quillModules = {
+        toolbar: [
+            //[{ 'font': [] }],
+            [{ 'header': [1, 2, false] }],
+            ['bold', 'italic', 'underline','strike', 'blockquote'],
+            [{'list': 'ordered'}, {'list': 'bullet'}, {'indent': '-1'}, {'indent': '+1'}],
+            ['link', 'image'],
+            [{ 'align': [] }, { 'color': [] }, { 'background': [] }],          // dropdown with defaults from theme
+            ['clean']
+        ],
+    }
+
+    const quillFormats = [
+        //'font',
+        'header',
+        'bold', 'italic', 'underline', 'strike', 'blockquote',
+        'list', 'bullet', 'indent',
+        'link', 'image',
+        'align', 'color', 'background',
+    ]
+
     return (
         <div>
             <TitleInput
@@ -47,7 +68,9 @@ const PostEditorComp = ({ postForm, setPostForm, onSubmit, loading }) => {
             <ReactQuill
                 style={{ height: 500, marginTop: 48, marginBottom: 48 }}
                 value={postForm.content}
-                onChange={(value) => setPostForm({ ...postForm, content: value })} />
+                onChange={(value) => setPostForm({ ...postForm, content: value })}
+                modules={quillModules}
+                formats={quillFormats} />
             <FileUploaderComp
                 defaultFiles={postForm.files}
                 onFileChanged={handleFileChanged}

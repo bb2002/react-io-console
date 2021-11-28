@@ -1,5 +1,5 @@
 import {useDispatch, useSelector} from "react-redux";
-import {boardCreate, boardRead, boardReset} from "../modules/Board.redux";
+import {boardCreate, boardDelete, boardRead, boardReset, boardUpdate} from "../modules/Board.redux";
 import {useFirebaseLogin} from "./useFirebaseLogin";
 
 export default function useBoard() {
@@ -16,6 +16,14 @@ export default function useBoard() {
         dispatch(boardCreate(data))
     }
 
+    const updatePost = (data) => {
+        dispatch(boardUpdate(data))
+    }
+
+    const deletePost = (category, no) => {
+        dispatch(boardDelete({ category, no }))
+    }
+
     const resetBoard = () => {
         dispatch(boardReset())
     }
@@ -24,6 +32,8 @@ export default function useBoard() {
         readPosts,
         writePost,
         resetBoard,
+        deletePost,
+        updatePost,
         board
     }
 }

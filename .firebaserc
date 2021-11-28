@@ -1,0 +1,14 @@
+{
+  "projects": {
+    "default": "knu-io"
+  },
+  "targets": {
+    "knu-io": {
+      "hosting": {
+        "ioconsole": [
+          "ioconsole"
+        ]
+      }
+    }
+  }
+}

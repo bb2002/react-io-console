@@ -1,12 +1,12 @@
 import React, {useEffect, useState} from 'react';
 import {useNavigate, useParams} from "react-router-dom";
-import {PageHeader, Spin} from "antd";
+import {message, PageHeader, Spin} from "antd";
 import PostEditorComp from "../../components/PostEditor.comp";
 import useBoard from "../../hooks/useBoard";
 
 const BoardUpdate = () => {
     const params = useParams()
-    const { board, readPosts } = useBoard()
+    const { board, readPosts, updatePost, resetBoard } = useBoard()
     const [postForm, setPostForm] = useState(undefined)
     const navigate = useNavigate()
 
@@ -18,7 +18,6 @@ const BoardUpdate = () => {
         if(board.read.code === 200) {
             const data = board.read.data[params.category].filter(value => value.no === params.no)[0]
             if(data) {
-                console.log("data", data)
                 setPostForm({
                     title: data.title,
                     content: data.description,
@@ -26,10 +25,24 @@ const BoardUpdate = () => {
                 })
             }
         }
-    }, [params.category, params.no, readPosts, board.read])
+        // 의존성 배열에 readPosts 추가 시 무한루프에 빠집니다.
+        // eslint-disable-next-line
+    }, [params.category, params.no, board.read])
+
+    useEffect(() => {
+        if(board.update.code === 200) {
+            navigate(`/console/read/${board.update.data.category}/${board.update.data.no}`)
+            resetBoard()
+            message.success("수정되었습니다.")
+        }
+    }, [board.update, navigate, resetBoard])
 
     const onSubmitHandle = () => {
-
+        updatePost({
+            no: params.no,
+            category: params.category,
+            ...postForm
+        })
     }
 
     if(postForm) {

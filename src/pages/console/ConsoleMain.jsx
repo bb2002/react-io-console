@@ -71,10 +71,6 @@ const ConsoleMain = () => {
                     listURL="/console/list/recruit"
                     createURL="/console/write/recruit" />
             </ConsoleContainer>
-            <br /><br /><br /><br />
-
-            <Title level={2}>빠른 이동</Title>
-
         </div>
     );
 };

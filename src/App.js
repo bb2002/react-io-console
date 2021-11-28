@@ -12,14 +12,13 @@ const AppContainer = styled.div`
 `
 
 function App() {
-    //const { height } = useWindowSize()
     const { getConfigFromStorage, firebaseLogin } = useFirebaseLogin()
     const navigate = useNavigate()
     const location = useLocation()
 
     const RouteContainer = styled.div`
       width: 100%;
-      height: 1000px;
+      height: 100vh;
     `
     
     useEffect(() => {

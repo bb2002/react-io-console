@@ -1,14 +1,14 @@
 import {
-    BOARD_CREATE,
-    BOARD_READ,
+    BOARD_CREATE, BOARD_DELETE,
+    BOARD_READ, BOARD_UPDATE,
     boardCreateFailure,
-    boardCreateSuccess,
+    boardCreateSuccess, boardDeleteSuccess,
     boardLoading,
     boardReadFailure,
-    boardReadSuccess
+    boardReadSuccess, boardUpdateFailure, boardUpdateSuccess
 } from "../modules/Board.redux";
 import { put, call, takeEvery, takeLatest } from 'redux-saga/effects';
-import { collection, getDocs, doc, setDoc } from "firebase/firestore";
+import { collection, getDocs, doc, setDoc, deleteDoc } from "firebase/firestore";
 import { fbStore } from "../libs/Firebase"
 import moment from "moment";
 
@@ -77,7 +77,6 @@ function boardCreateGen() {
         const newDoc = yield call(patch)
         yield put(boardCreateSuccess({ category: action.payload.category, no: newDoc }))
     }, function* (ex) {
-        console.log(ex)
         if(ex.response === undefined) {
             yield put(boardCreateFailure(-1))
         } else {
@@ -86,7 +85,52 @@ function boardCreateGen() {
     })
 }
 
+function boardUpdateGen() {
+    return generateBoardFunction(function* (action) {
+        async function patch() {
+            const docName = action.payload.no
+            const ref = doc(fbStore, action.payload.category, docName)
+            await setDoc(ref, {
+                title: action.payload.title,
+                description: action.payload.content,
+                files: action.payload.files,
+                createdAt: new Date()
+            })
+            return docName
+        }
+
+        const updatedDoc = yield call(patch)
+        yield put(boardUpdateSuccess({ category: action.payload.category, no: updatedDoc }))
+    }, function* (ex) {
+        if(ex.response === undefined) {
+            yield put(boardUpdateFailure(-1))
+        } else {
+            yield put(boardUpdateFailure(ex.response.status))
+        }
+    })
+}
+
+function boardDeleteGen() {
+    return generateBoardFunction(function* (action) {
+        async function patch() {
+            const ref = doc(fbStore, action.payload.category, action.payload.no)
+            await deleteDoc(ref)
+        }
+
+        yield call(patch)
+        yield put(boardDeleteSuccess())
+    }, function* (ex) {
+        if(ex.response === undefined) {
+            yield put(boardDeleteSuccess(-1))
+        } else {
+            yield put(boardDeleteSuccess(ex.response.status))
+        }
+    })
+}
+
 export default function* boardSaga() {
     yield takeEvery(BOARD_READ, boardReadGen())
     yield takeLatest(BOARD_CREATE, boardCreateGen())
+    yield takeLatest(BOARD_UPDATE, boardUpdateGen())
+    yield takeLatest(BOARD_DELETE, boardDeleteGen())
 }
