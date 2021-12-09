@@ -178,7 +178,8 @@
 /* video */
 .ql-viewer .ql-video {
     display: block;
-    max-width: 100%;
+    width: 728px;
+    height: 410px;
 }
 .ql-viewer .ql-video.ql-align-center {
     margin: 0 auto;

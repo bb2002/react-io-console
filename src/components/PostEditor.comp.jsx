@@ -4,6 +4,7 @@ import ReactQuill from "react-quill";
 import FileUploaderComp from "./FileUploader.comp";
 import {RedoOutlined, SaveOutlined} from "@ant-design/icons";
 import styled from "styled-components";
+import "../libs/QuillEditor.css"
 
 const TitleInput = styled(Input)`
   border: none !important;
@@ -43,10 +44,10 @@ const PostEditorComp = ({ postForm, setPostForm, onSubmit, loading }) => {
             [{ 'header': [1, 2, false] }],
             ['bold', 'italic', 'underline','strike', 'blockquote'],
             [{'list': 'ordered'}, {'list': 'bullet'}, {'indent': '-1'}, {'indent': '+1'}],
-            ['link', 'image'],
+            ['link', 'image', 'video'],
             [{ 'align': [] }, { 'color': [] }, { 'background': [] }],          // dropdown with defaults from theme
             ['clean']
-        ],
+        ]
     }
 
     const quillFormats = [
@@ -54,7 +55,7 @@ const PostEditorComp = ({ postForm, setPostForm, onSubmit, loading }) => {
         'header',
         'bold', 'italic', 'underline', 'strike', 'blockquote',
         'list', 'bullet', 'indent',
-        'link', 'image',
+        'link', 'image', 'video',
         'align', 'color', 'background',
     ]
 
@@ -68,7 +69,7 @@ const PostEditorComp = ({ postForm, setPostForm, onSubmit, loading }) => {
             <ReactQuill
                 style={{ height: 500, marginTop: 48, marginBottom: 48 }}
                 value={postForm.content}
-                onChange={(value) => setPostForm({ ...postForm, content: value })}
+                onChange={(value) => setPostForm({ ...postForm, content: value})}
                 modules={quillModules}
                 formats={quillFormats} />
             <FileUploaderComp
