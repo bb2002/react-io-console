@@ -79,7 +79,7 @@ const BoardList = () => {
                     },                                 // 제목
                     date: value.createdAt.format("MM/DD HH:mm"),        // 날짜
                     actions: value.no,
-                })).filter(value => value.title.text.indexOf(searchText) !== -1)
+                })).filter(value => value.title.text.indexOf(searchText) !== -1).reverse()
             )
         }
 
